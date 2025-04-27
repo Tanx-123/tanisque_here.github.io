@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanisque Bagal - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc; /* bg-slate-50 */
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .section-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .tech-tag {
+            display: inline-block;
+            background-color: #e0e7ff; /* indigo-100 */
+            color: #4338ca; /* indigo-800 */
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px; /* rounded-full */
+            font-size: 0.8rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+            margin: 0.2rem;
+            transition: transform 0.2s ease;
+        }
+        .tech-tag:hover {
+            transform: scale(1.05);
+        }
+        .menu-icon {
+            width: 30px;
+            height: 22px;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .menu-icon .bar1, .menu-icon .bar2, .menu-icon .bar3 {
+            width: 100%;
+            height: 3px;
+            background-color: #374151; /* gray-700 */
+            margin: 5px 0;
+            transition: 0.4s;
+            border-radius: 3px;
+        }
+        .change .bar1 {
+            transform: rotate(-45deg) translate(-7px, 6px);
+        }
+        .change .bar2 {opacity: 0;}
+        .change .bar3 {
+            transform: rotate(45deg) translate(-7px, -6px);
+        }
+        nav a {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: #4f46e5; /* indigo-600 */
+            transition: width 0.3s ease;
+            -webkit-transition: width 0.3s ease;
+        }
+        nav a:hover::after {
+            width: 100%;
+            left: 0;
+            background: #4f46e5; /* indigo-600 */
+        }
+        nav a.active::after {
+             width: 100%;
+            left: 0;
+            background: #4f46e5; /* indigo-600 */
+        }
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .skill-icon {
+             transition: transform 0.3s ease;
+        }
+        .skill-icon:hover {
+            transform: scale(1.1);
+        }
+        /* Dark mode styles */
+        html.dark body {
+            background-color: #0f172a;
+            color: #e0e7ef;
+        }
+        html.dark .bg-white, html.dark .bg-slate-50 {
+            background-color: #1e293b !important;
+            color: #e0e7ef !important;
+        }
+        html.dark .text-gray-900, html.dark .text-gray-700, html.dark .text-gray-600 {
+            color: #e0e7ef !important;
+        }
+        html.dark .bg-indigo-600, html.dark .bg-purple-600 {
+            background-color: #2563eb !important;
+        }
+        html.dark .border-indigo-500, html.dark .border-purple-500, html.dark .border-teal-500, html.dark .border-orange-500 {
+            border-color: #38bdf8 !important;
+        }
+        .skill-bar-bg {
+            background: #e0e7ff;
+            border-radius: 9999px;
+            height: 12px;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .skill-bar-fill {
+            height: 12px;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, #4f46e5 60%, #22d3ee 100%);
+            transition: width 1s;
+        }
+        .lang-badge {
+            display: inline-block;
+            background: #d1fae5;
+            color: #047857;
+            border-radius: 9999px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.9rem;
+            margin: 0.2rem;
+        }
+        html.dark .lang-badge {
+            background: #134e4a;
+            color: #a7f3d0;
+        }
+        .cert-card {
+            background: #f1f5f9;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .cert-card:hover {
+            transform: translateY(-4px) scale(1.02);
+        }
+        html.dark .cert-card {
+            background: #1e293b;
+        }
+        .timeline {
+            border-left: 3px solid #4f46e5;
+            margin-left: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -1.7rem;
+            top: 0.2rem;
+            width: 1rem;
+            height: 1rem;
+            background: #4f46e5;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            z-index: 1;
+        }
+        /* Code snippet styling */
+        pre, code {
+            background: #f3f4f6;
+            color: #334155;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.95em;
+            overflow-x: auto;
+        }
+        html.dark pre, html.dark code {
+            background: #1e293b;
+            color: #a5b4fc;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+    <!-- Dark/Light Mode Toggle -->
+    <button id="theme-toggle" aria-label="Toggle dark mode" type="button" class="fixed top-4 right-4 z-50 bg-white dark:bg-slate-800 border border-gray-300 dark:border-gray-700 rounded-full p-2 shadow hover:scale-105 transition">
+        <i id="theme-toggle-icon" class="fas fa-moon text-indigo-600"></i>
+    </button>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300" role="navigation">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-2xl font-bold text-indigo-600">Tanisque Bagal</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#about" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" aria-label="About">About</a>
+                    <a href="#education" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" aria-label="Education">Education</a>
+                    <a href="#skills" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" aria-label="Skills">Skills</a>
+                    <a href="#projects" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" aria-label="Projects">Projects</a>
+                    <a href="#experience" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" aria-label="Experience">Experience</a>
+                    <a href="#contact" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition duration-300 shadow" aria-label="Contact">Contact</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="menu-icon focus:outline-none">
+                        <div class="bar1"></div>
+                        <div class="bar2"></div>
+                        <div class="bar3"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50" aria-label="About">About</a>
+                <a href="#education" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50" aria-label="Education">Education</a>
+                <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50" aria-label="Skills">Skills</a>
+                <a href="#projects" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50" aria-label="Projects">Projects</a>
+                <a href="#experience" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50" aria-label="Experience">Experience</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700" aria-label="Contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section id="hero" class="bg-gradient-to-r from-indigo-600 to-green-500 text-white min-h-[80vh] flex items-center justify-center text-center px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto section-fade-in">
+            <!-- Use the actual profile image file in the folder -->
+            <h1 class="text-4xl md:text-6xl font-bold mb-2 leading-tight">Tanisque Bagal</h1>
+            <p class="text-xl md:text-2xl mb-2 font-semibold">Passionate Developer | Python | Machine Learning</p>
+            <p class="text-lg mb-6 text-indigo-100">Building intelligent solutions in AI, ML, data science, automation, and beyond</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
+                <a href="#contact" class="bg-white text-indigo-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-indigo-100 transition duration-300 shadow-lg transform hover:scale-105 flex items-center gap-2" aria-label="Contact"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="Tanisque_Bagal_Resume.pdf" download class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-white hover:text-indigo-600 transition duration-300 shadow-lg transform hover:scale-105" aria-label="Download Resume">Download Resume</a>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6 text-indigo-100 text-lg">
+                <span><i class="fas fa-phone mr-2"></i>+91-8697870530</span>
+                <span><i class="fas fa-envelope mr-2"></i>bagaltanisque@gmail.com</span>
+            </div>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="about" class="py-20 md:py-28 bg-white">
+        <div class="max-w-4xl mx-auto px-6 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">About Me</h2>
+            <div class="text-center">
+                <img src="Tanisque.jpg" alt="Tanisque Bagal profile photo" class="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto mb-8 shadow-lg border-4 border-indigo-200">
+                <p class="text-lg text-gray-700 mb-6 leading-relaxed max-w-3xl mx-auto">
+                    I am a Computer Science and Engineering graduate (B.Tech, RCCIIT, Kolkata) with a strong foundation in software development, data science, and artificial intelligence. My expertise spans Python, machine learning, deep learning, NLP, computer vision, and data analytics. I am passionate about building intelligent solutions across diverse domains, including healthcare, finance, automation, and natural language understanding.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto">
+                    My journey includes developing impactful applications such as a deep learning-based Disease Prediction tool, a real-time Sign Language Detector, and various projects in data analytics, automation, and AI-driven web applications. I enjoy exploring new technologies, participating in hackathons, and collaborating on innovative projects that solve real-world problems.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto mb-4">
+                    I thrive in collaborative environments and am always eager to learn, adapt, and contribute to the fast-evolving world of AI and technology.
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- Education Section -->
+    <section id="education" class="py-20 md:py-28 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-6 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">Education</h2>
+            <div class="space-y-10">
+                <!-- College -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-indigo-500">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-1">Bachelor of Technology (B.Tech), Computer Science & Engineering</h3>
+                    <p class="text-indigo-700 font-medium mb-2">RCC Institute of Information Technology, Kolkata</p>
+                    <p class="text-sm text-gray-500 mb-2">2020 - 2024</p>
+                    <p class="text-gray-700">CGPA: 8.92 / 10.0</p>
+                </div>
+                <!-- School - Class XII -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-1">Higher Secondary Education (CBSE - Class XII)</h3>
+                    <p class="text-green-700 font-medium mb-2">Haryana Vidya Mandir (CBSE), Kolkata</p>
+                    <p class="text-sm text-gray-500 mb-2">2018 - 2020</p>
+                    <p class="text-gray-700">Percentage: 85%</p>
+                </div>
+                <!-- School - Class X -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-orange-500">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-1">Secondary Education (ICSE - Class X)</h3>
+                    <p class="text-orange-700 font-medium mb-2">St Xavier's Institution (ICSE), Kolkata</p>
+                    <p class="text-sm text-gray-500 mb-2">2018</p>
+                    <p class="text-gray-700">Percentage: 94%</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 md:py-28 bg-slate-50">
+        <div class="max-w-6xl mx-auto px-6 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">Technical Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Programming Languages -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-4 flex items-center gap-2"><i class="fas fa-terminal"></i> Programming Languages</h3>
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fab fa-python text-3xl text-indigo-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">Python</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-code text-2xl text-gray-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">C++</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-database text-2xl text-blue-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">SQL</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Data Science & AI -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+                    <h3 class="text-xl font-semibold text-green-700 mb-4 flex items-center gap-2"><i class="fas fa-brain"></i> Data Science & AI</h3>
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-robot text-2xl text-green-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">Machine Learning</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-brain text-2xl text-indigo-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">Deep Learning</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-language text-2xl text-purple-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">NLP</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-chart-line text-2xl text-yellow-500"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">Data Analysis</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-chart-pie text-2xl text-green-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">Data Visualization</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-magic text-2xl text-purple-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">Computer Vision</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Core CS Concepts -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+                    <h3 class="text-xl font-semibold text-pink-700 mb-4 flex items-center gap-2"><i class="fas fa-cogs"></i> Core CS Concepts</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full justify-items-center">
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-pink-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-sitemap text-2xl text-pink-500"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700 text-center">Data Structures & Algorithms</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-project-diagram text-2xl text-yellow-500"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700 text-center">OOP</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-network-wired text-2xl text-blue-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700 text-center">DBMS</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tools & Platforms -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+                    <h3 class="text-xl font-semibold text-red-700 mb-4 flex items-center gap-2"><i class="fas fa-tools"></i> Tools & Platforms</h3>
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fab fa-git-alt text-2xl text-red-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">Git & GitHub</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fas fa-flask text-2xl text-indigo-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">Flask</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fab fa-react text-2xl text-green-600"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">React</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mb-2 skill-icon">
+                                <i class="fab fa-node-js text-2xl text-yellow-500"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">Express.js</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 text-center">
+                <h3 class="text-xl font-semibold mb-6">Language Proficiency</h3>
+                <div class="flex flex-wrap justify-center gap-8">
+                    <div class="flex flex-col items-center group">
+                        <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-2 group-hover:scale-110 transition">
+                            <i class="fas fa-globe-americas text-2xl text-green-600"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800">English</span>
+                        <span class="text-sm text-gray-500 group-hover:text-green-600 transition">Fluent</span>
+                    </div>
+                    <div class="flex flex-col items-center group">
+                        <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center mb-2 group-hover:scale-110 transition">
+                            <i class="fas fa-feather-alt text-2xl text-yellow-500"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800">Bengali</span>
+                        <span class="text-sm text-gray-500 group-hover:text-yellow-500 transition">Native</span>
+                    </div>
+                    <div class="flex flex-col items-center group">
+                        <div class="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center mb-2 group-hover:scale-110 transition">
+                            <i class="fas fa-comments text-2xl text-pink-500"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800">Hindi</span>
+                        <span class="text-sm text-gray-500 group-hover:text-pink-500 transition">Fluent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 md:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-6 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">Project Portfolio</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
+                <!-- Disease Prediction App -->
+                <div class="project-card bg-slate-50 rounded-lg shadow-md overflow-hidden flex flex-col items-center">
+                    <div class="flex items-center justify-center w-full h-48 bg-indigo-100">
+                        <i class="fas fa-notes-medical text-6xl text-indigo-600"></i>
+                    </div>
+                    <div class="p-6 w-full">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Disease Prediction App</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">NLP-powered app for predicting diseases from symptoms using deep learning. Built with Python, Gradio, and ML/NLP algorithms. <b>95% accuracy</b> on test data.</p>
+                        <div class="mb-4">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Gradio</span>
+                            <span class="tech-tag">ML/NLP</span>
+                        </div>
+                        <a href="https://github.com/Tanx-123/Disease-Prediction-App.git" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-medium transition duration-300 inline-flex items-center">View on GitHub <i class="fas fa-arrow-right ml-2"></i></a>
+                    </div>
+                </div>
+                <!-- Fetal Health Monitoring Application -->
+                <div class="project-card bg-slate-50 rounded-lg shadow-md overflow-hidden flex flex-col items-center">
+                    <div class="flex items-center justify-center w-full h-48 bg-green-100">
+                        <i class="fas fa-baby text-6xl text-green-600"></i>
+                    </div>
+                    <div class="p-6 w-full">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Fetal Health Monitoring Application</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">Three-component system (Flask, Express.js, React) for real-time fetal health monitoring. Integrates ML models for risk prediction and visualization.</p>
+                        <div class="mb-4">
+                            <span class="tech-tag">Machine Learning</span>
+                            <span class="tech-tag">Flask</span>
+                            <span class="tech-tag">Express.js</span>
+                            <span class="tech-tag">React</span>
+                        </div>
+                        <a href="https://github.com/Tanx-123/Fetal-Health-Monitoring-Application.git" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-medium transition duration-300 inline-flex items-center">View on GitHub <i class="fas fa-arrow-right ml-2"></i></a>
+                    </div>
+                </div>
+                <!-- Sign Language Detector -->
+                <div class="project-card bg-slate-50 rounded-lg shadow-md overflow-hidden flex flex-col items-center">
+                    <div class="flex items-center justify-center w-full h-48 bg-yellow-100">
+                        <i class="fas fa-sign-language text-6xl text-yellow-500"></i>
+                    </div>
+                    <div class="p-6 w-full">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Sign Language Detector</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">Real-time sign language detection using ML and computer vision. Achieved <b>95% accuracy</b> in just 5 days, boosting classification accuracy by 40%.</p>
+                        <div class="mb-4">
+                            <span class="tech-tag">ML Algorithms</span>
+                            <span class="tech-tag">Computer Vision</span>
+                        </div>
+                        <a href="https://github.com/Tanx-123/Sign-language-detector.git" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-medium transition duration-300 inline-flex items-center">View on GitHub <i class="fas fa-arrow-right ml-2"></i></a>
+                    </div>
+                </div>
+                <!-- Ollama Webpage Summarizer Extension -->
+                <div class="project-card bg-slate-50 rounded-lg shadow-md overflow-hidden flex flex-col items-center">
+                    <div class="flex items-center justify-center w-full h-48 bg-purple-100">
+                        <i class="fas fa-file-alt text-6xl text-purple-600"></i>
+                    </div>
+                    <div class="p-6 w-full">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Ollama Webpage Summarizer Extension</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">Chrome extension using Ollama LLM to summarize web pages. Demonstrates LLM integration and Chrome extension API skills.</p>
+                        <div class="mb-4">
+                            <span class="tech-tag">Chrome Extension</span>
+                            <span class="tech-tag">Ollama LLM</span>
+                        </div>
+                        <a href="https://github.com/Tanx-123/Ollama_Extension.git" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-medium transition duration-300 inline-flex items-center">View on GitHub <i class="fas fa-arrow-right ml-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Experience Timeline -->
+    <section id="experience" class="py-20 md:py-28 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-6 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">Experience</h2>
+            <div class="flex flex-col gap-8">
+                <!-- Internship Experience -->
+                <div class="bg-white rounded-lg shadow-md border-l-4 border-indigo-500 p-6 flex flex-col md:flex-row md:items-center">
+                    <div class="flex-shrink-0 flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mr-0 md:mr-6 mb-4 md:mb-0">
+                        <i class="fas fa-laptop-code text-3xl text-indigo-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-1">Quantitative Analysis Intern</h3>
+                        <p class="text-indigo-700 font-medium mb-1">National Institute Of Industrial Training (NIIT), Kolkata</p>
+                        <p class="text-sm text-gray-500 mb-2">July 2023 - August 2023</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1 mb-2">
+                            <li>Worked on a fetal health monitoring project using machine learning for risk prediction.</li>
+                            <li>Developed and deployed a 3-component architecture (Flask, Express.js, React).</li>
+                            <li>Improved prediction accuracy and delivered actionable insights for clinicians.</li>
+                        </ul>
+                        <div>
+                            <span class="tech-tag">Machine Learning</span>
+                            <span class="tech-tag">Flask</span>
+                            <span class="tech-tag">Express.js</span>
+                            <span class="tech-tag">React</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add more experience blocks here if you have more relevant experience in your resume -->
+            </div>
+        </div>
+    </section>
+    <!-- Certifications Section -->
+    <section id="certifications" class="py-20 md:py-28 bg-white">
+        <div class="max-w-5xl mx-auto px-6 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">Certifications</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="cert-card text-center">
+                    <i class="fas fa-certificate text-4xl text-indigo-600 mb-3"></i>
+                    <h4 class="font-semibold mb-2">Machine Learning with Python</h4>
+                    <p class="text-gray-600 mb-2">IBM</p>
+                </div>
+                <div class="cert-card text-center">
+                    <i class="fas fa-code-branch text-4xl text-green-600 mb-3"></i>
+                    <h4 class="font-semibold mb-2">Version Control With Git</h4>
+                    <p class="text-gray-600 mb-2">Coursera</p>
+                </div>
+                <div class="cert-card text-center">
+                    <i class="fas fa-chart-bar text-4xl text-purple-600 mb-3"></i>
+                    <h4 class="font-semibold mb-2">Data Analysis with Python</h4>
+                    <p class="text-gray-600 mb-2">Coursera</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 md:py-28 bg-gradient-to-r from-indigo-600 to-green-500 text-white">
+        <div class="max-w-4xl mx-auto px-6 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-center">Contact & Collaboration</h2>
+            <p class="text-lg text-indigo-100 mb-10 max-w-2xl mx-auto text-center">
+                Interested in collaborating on healthcare AI projects or want to connect? Reach out and let's build something impactful together!
+            </p>
+            <div class="flex flex-col md:flex-row gap-10 items-start md:items-stretch justify-center">
+                <!-- Contact Info Card -->
+                <div class="flex-1 bg-white/10 rounded-2xl shadow-lg p-8 mb-8 md:mb-0 flex flex-col justify-between min-w-[270px]">
+                    <h3 class="text-2xl font-semibold mb-6 flex items-center gap-2"><i class="fas fa-user-circle"></i> Let's Connect</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-white/20 rounded-full p-3"><i class="fas fa-phone text-green-200"></i></span>
+                            <span class="text-lg">+91-8697870530</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="bg-white/20 rounded-full p-3"><i class="fas fa-envelope text-indigo-200"></i></span>
+                            <span class="text-lg">bagaltanisque@gmail.com</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="bg-white/20 rounded-full p-3"><i class="fab fa-github text-gray-200"></i></span>
+                            <a href="https://github.com/Tanx-123" target="_blank" class="underline hover:text-indigo-200 transition" aria-label="GitHub Profile">GitHub</a>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="bg-white/20 rounded-full p-3"><i class="fab fa-linkedin text-blue-200"></i></span>
+                            <a href="https://www.linkedin.com/in/tanisque-bagal-3b2367204/" target="_blank" class="underline hover:text-indigo-200 transition" aria-label="LinkedIn Profile">LinkedIn</a>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="bg-white/20 rounded-full p-3"><i class="fas fa-map-marker-alt text-pink-200"></i></span>
+                            <span class="text-lg">Kolkata, India</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Contact Form Card -->
+                <form class="flex-1 bg-white rounded-2xl shadow-lg p-8 text-gray-800 max-w-xl w-full mx-auto" aria-label="Contact form" action="#" method="POST" autocomplete="on">
+                    <h3 class="text-xl font-semibold mb-4 text-indigo-700 flex items-center gap-2"><i class="fas fa-paper-plane"></i> Send a Message</h3>
+                    <label class="block mb-2 text-gray-700 font-semibold" for="name">Name</label>
+                    <input id="name" name="name" type="text" required autocomplete="name" class="w-full mb-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block mb-2 text-gray-700 font-semibold" for="email">Email</label>
+                    <input id="email" name="email" type="email" required autocomplete="email" class="w-full mb-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <label class="block mb-2 text-gray-700 font-semibold" for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" required autocomplete="off" class="w-full mb-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    <button type="submit" class="bg-indigo-600 text-white px-8 py-2 rounded-md font-semibold hover:bg-indigo-700 transition w-full flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p>&copy; 2024 Tanisque Bagal. All rights reserved.</p>
+            <p class="text-sm mt-2">Built with <i class="fas fa-heart text-red-500"></i> using HTML, Tailwind CSS, and JavaScript.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelectorAll('#mobile-menu a');
+
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuButton.classList.toggle('change');
+        });
+
+        // Close mobile menu when a link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuButton.classList.remove('change');
+            });
+        });
+
+        // Intersection Observer for section fade-in animation
+        const sections = document.querySelectorAll('.section-fade-in');
+        const options = {
+            root: null, // viewport
+            threshold: 0.15, // trigger when 15% of the section is visible
+            rootMargin: "0px"
+        };
+
+        const observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+                entry.target.classList.add('section-visible');
+                observer.unobserve(entry.target);
+            });
+        }, options);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Active navigation link highlighting
+        const navLinksDesktop = document.querySelectorAll('nav .hidden a');
+        const allSections = document.querySelectorAll('section');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            allSections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinksDesktop.forEach(link => {
+                link.classList.remove('text-indigo-600', 'font-semibold');
+                link.classList.add('text-gray-600');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('text-indigo-600', 'font-semibold');
+                    link.classList.remove('text-gray-600');
+                }
+            });
+             // Special case for contact button
+            const contactButton = document.querySelector('nav .hidden a[href="#contact"]');
+            if (current === 'contact') {
+                contactButton.classList.add('bg-indigo-700');
+            } else {
+                 contactButton.classList.remove('bg-indigo-700');
+                 contactButton.classList.add('bg-indigo-600');
+            }
+        });
+        // Dark/Light mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-toggle-icon');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            if(document.documentElement.classList.contains('dark')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+        // Animate skill bars on scroll
+        function animateSkillBars() {
+            document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+                bar.style.width = bar.getAttribute('style').replace('width:', '').trim();
+            });
+        }
+        window.addEventListener('DOMContentLoaded', animateSkillBars);
+    </script>
+
+</body>
+</html>
